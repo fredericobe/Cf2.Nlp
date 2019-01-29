@@ -26,3 +26,12 @@ class WordProcess:
                 phrase.append(word)
         return phrase
 
+    def RemoveSpecialChars(self, wordArray):
+        ##TODO: Should use something more dinamyc based on the language, as stopwords does
+        chars = [",",".","?","!"]
+        phrase = []
+        for word in wordArray:
+            if word not in chars:
+                phrase.append(word)
+        return phrase
+

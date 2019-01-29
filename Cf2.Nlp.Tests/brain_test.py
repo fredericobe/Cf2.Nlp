@@ -3,7 +3,6 @@ from brain import Brain
 from wordProcess import WordProcess
 from synonym import Synonym
 from term import Term
-from brain import Brain
 from entities import Entity
 from intent import Intent
 from memory import Memory
@@ -221,6 +220,7 @@ class TestBrain(unittest.TestCase):
     def testar_obterIntentMedo(self):
         word = WordProcess()
         b = Brain(word,self.memorySimple)
+        b.AccuracyFactor=0.5
         b.Learn()
         result = b.GetMostProbableIntent("tenho medo de aranhas")
         self.assertEquals(result['intent'].Name,"medo")
@@ -228,6 +228,7 @@ class TestBrain(unittest.TestCase):
     def testar_obterIntentPedra_1(self):
         word = WordProcess()
         b = Brain(word,self.memoryComplex)
+        b.AccuracyFactor=0.5
         b.Learn()
         result = b.GetMostProbableIntent("qual a intenção de rocha")
         self.assertEquals(result['intent'].Name,"pedras")
@@ -235,6 +236,7 @@ class TestBrain(unittest.TestCase):
     def testar_obterIntentPedra_2(self):
         word = WordProcess()
         b = Brain(word,self.memoryComplex)
+        b.AccuracyFactor=0.5
         b.Learn()
         result = b.GetMostProbableIntent("qual a intenção de pedregulho")
         self.assertEquals(result['intent'].Name,"pedras")
@@ -243,6 +245,7 @@ class TestBrain(unittest.TestCase):
         word = WordProcess()
         b = Brain(word,self.memorySimple)
         b.Learn()
+        b.AccuracyFactor=0.2
         result = b.GetMostProbableIntent("eu amo pipoca")
         self.assertEquals(result['intent'].Name,"amor")
 
@@ -251,6 +254,7 @@ class TestBrain(unittest.TestCase):
         word = WordProcess()
         b = Brain(word,self.memorySimple)
         b.Learn()
+        b.AccuracyFactor=0.4
         result = b.GetMostProbableIntent("tenho amor por você")
         self.assertEquals(result['intent'].Name,"amor")
 

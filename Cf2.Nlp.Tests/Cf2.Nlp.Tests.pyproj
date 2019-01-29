@@ -22,6 +22,9 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="brain_context_test.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="brain_test.py" />
     <Compile Include="Cf2.Nlp.Tests.py" />
     <Compile Include="intent_test.py" />

@@ -11,10 +11,22 @@ class Brain:
         self.wordProcess = word
         self.Memory = memory
         self._reEngine = re.compile(self._paramNameAndOrderRegExPattern)
-
+        self._currentContexts = []
+        self.AccuracyFactor = 1 #Default value for intent selection
 
     def setMemory(self,memory):
         self.memory = memory
+    
+    def addCurrentContext(self, contextsList):
+        """Add new contexts to the Brain"""
+        self._currentContexts.extend(contextsList)
+    
+    def getCurrentContexts(self):
+        """Get the list of current contexts to the Brain"""
+        return self._currentContexts
+
+    def clearContexts(self):
+        self._currentContexts = []
 
     def Learn(self):
         for intent in self.Memory.Intents:
@@ -23,6 +35,8 @@ class Brain:
                     self._learnNoEntity(intent,phrase)
                 else:
                     self._learnWithEntity(intent,phrase)
+            
+            intent.calculatePoints()
      
     def _isParam(self,term):
         match = re.match(self._paramNameAndOrderRegExPattern,term)
@@ -39,10 +53,12 @@ class Brain:
             return None
             
     def _learnNoEntity(self, intent, phrase):
+        totalPhrasePoints = 0
         sentence = phrase.getSentence()
         sentence = self.wordProcess.Tokenize(sentence)
         sentence = self.wordProcess.Stemming(sentence)
         sentence = self.wordProcess.RemoveStopWords(sentence)
+        sentence = self.wordProcess.RemoveSpecialChars(sentence)
         for word in sentence:
             if self._isParam(word) == True:
                 type = self._getTypeNameFromParam(word)
@@ -56,6 +72,7 @@ class Brain:
                     intent.addCorpusItem(corpus)
                 else:
                     corpus.strength +=1
+                totalPhrasePoints = totalPhrasePoints + corpus.strength
             else:
                 corpus = intent.findCorpusByTerm(word)
                 if corpus == None:
@@ -66,31 +83,51 @@ class Brain:
                     intent.addCorpusItem(corpus)
                 else:
                     corpus.strength +=1 
+                totalPhrasePoints = totalPhrasePoints + corpus.strength
+        phrase.Points = totalPhrasePoints
 
     def _learnWithEntity(self, intent, phrase):
         phrase.resolveEntities()
         intent.mergeEntities(phrase)
         self._learnNoEntity(intent,phrase)
-        #TODO: Retirar o learnNoEntity e fazer um learning onde a entidade no corpus seja só o tipo
 
+    def _getIntentsByContext(self):
+
+        if len(self._currentContexts)==0:
+            return list(filter(lambda x: len(x.InputContexts)==0 ,self.Memory.Intents))              
+        else:
+            return list(filter(lambda x: len(x.InputContexts)>0 ,self.Memory.Intents)) 
 
     def GetMostProbableIntent(self,sentence):
         high_score = 0
+        factor = 0
         selectedIntent = None
-        for intent in self.Memory.Intents:
+
+        intentList = self._getIntentsByContext()
+
+        for intent in intentList:
             score = 0
             score = self.CalculateIntentScore(sentence,intent)
             if score > high_score:
                 high_score = score
                 selectedIntent = intent
-            
-        return {'intent':selectedIntent,'score': high_score}
+  
+        if(selectedIntent!=None):
+            factor = (high_score / selectedIntent.getHigherPointPhrase())
+            if factor>=self.AccuracyFactor:
+                self.addCurrentContext(selectedIntent.OutputContexts)
+            else:
+                high_score = 0
+                selectedIntent = None
+
+        return {'intent':selectedIntent,'score': high_score, 'factor':factor }
 
     def CalculateIntentScore(self,sentence,intent):
         score = 0 
         sentence = self.wordProcess.Tokenize(sentence)
         sentence = self.wordProcess.Stemming(sentence)
         sentence = self.wordProcess.RemoveStopWords(sentence)
+        sentence = self.wordProcess.RemoveSpecialChars(sentence)
         for word in sentence:
             entity =  self.Memory.FindEntity(word)
             if entity != None:

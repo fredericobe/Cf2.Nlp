@@ -16,6 +16,7 @@ class Phrase:
         self.myBraing = brain
         self.params = dict() 
         self._hasEntity = None
+        self.Points = 0
 
     def setIntent(self,intent):
         self.myIntent = intent
