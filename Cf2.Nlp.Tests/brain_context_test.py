@@ -29,6 +29,7 @@ class Test_brain_context_test(unittest.TestCase):
         intent.Name ="comprar"
         intent.addTrainingPhrase("Gostaria de fazer uma compra")
         intent.addTrainingPhrase("quero comprar uma coisa")
+        intent.addTrainingPhrase("quero fazer uma compra")
         intent.addOutputContext("compra")
         intent.addResponse("Certo, o que você gostaria de comprar?")
         
@@ -47,6 +48,7 @@ class Test_brain_context_test(unittest.TestCase):
 
         word = WordProcess()
         self.brain = Brain(word,self.memory)
+        
         self.brain.Learn()
 
     def testar_boas_vindas_sem_contexto(self):

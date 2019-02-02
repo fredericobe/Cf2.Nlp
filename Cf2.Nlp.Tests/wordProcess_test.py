@@ -21,17 +21,17 @@ class WordProcessTest(unittest.TestCase):
     def testar_stemin(self):
         word = WordProcess()
         result = word.Stemming(self.pharseExpected)
-        self.assertEquals(result,["eu", "gost", "de", "corr"])
+        self.assertEquals([result[0].stem,result[1].stem,result[2].stem,result[3].stem],["eu", "gost", "de", "corr"])
 
     def testar_stemin_param(self):
         word = WordProcess()
-        result = word.Stemming(self.phraseParamExpected)
-        self.assertEquals(result,["eu", "gost", "de", "__fruta__"])
+        result = word.Stemming(self.phraseParamExpected) 
+        self.assertEquals([result[0].stem,result[1].stem,result[2].stem,"__fruta__"],["eu", "gost", "de", "__fruta__"])
 
     def testar_stopWord(self):
         word = WordProcess()
-        result = word.RemoveStopWords(self.pharseExpected)
-        self.assertEquals(result,[ "gosto", "correr"])
+        result = word.RemoveStopWords(word.Stemming(self.pharseExpected) )
+        self.assertEquals([result[0].value,result[1].value],[ "gosto", "correr"])
 
     
 

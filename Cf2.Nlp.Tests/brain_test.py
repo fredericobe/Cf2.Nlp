@@ -198,7 +198,7 @@ class TestBrain(unittest.TestCase):
         b.Learn()
         i = b.Memory.GetIntent("medo")
         result = b.CalculateIntentScore("tenho medo de aranhas",i)
-        self.assertEquals(result,3)
+        self.assertEquals(result['score'],3)
 
     def testar_score_de_intent_sucesso_amor(self):
         word = WordProcess()
@@ -206,7 +206,7 @@ class TestBrain(unittest.TestCase):
         b.Learn()
         i = b.Memory.GetIntent("amor")
         result = b.CalculateIntentScore("eu amo aquela menina",i)
-        self.assertEquals(result,1)
+        self.assertEquals(result['score'],1)
 
     
     def testar_score_de_intent_falha(self):
@@ -215,7 +215,7 @@ class TestBrain(unittest.TestCase):
         b.Learn()
         i = b.Memory.GetIntent("amor")
         result = b.CalculateIntentScore("tenho medo de aranhas",i)
-        self.assertEquals(result,0)
+        self.assertEquals(int(result['score']),0)
 
     def testar_obterIntentMedo(self):
         word = WordProcess()

@@ -36,6 +36,19 @@ class TestIntent(unittest.TestCase):
         corpusItem = intent.findCorpusByEntity("teste")
         self.assertEquals(corpusItem.strength,1)
 
+    def testar_randonResponse(self):
+        intent = Intent()
+        intent.addResponse("Resposta 1")
+        intent.addResponse("Resposta 2")
+        intent.addResponse("Resposta 3")
+
+        response1 = intent.getRandomResponse()
+        response2 = intent.getRandomResponse()
+        response3 = intent.getRandomResponse()
+
+        self.assertTrue(response1 != response2 or response3 != response2 or response1 != response3)
+
+
 
 
 
