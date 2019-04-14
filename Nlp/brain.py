@@ -1,19 +1,19 @@
 from wordProcess import WordProcess
 from corpusItem import CorpusItem
+from sentence import Sentence
+from corpusHelper import CorpusHelper
 import re
 class Brain:
 
 
     def __init__(self, word, memory):
-        self._entityRegExPatterns = "{entity:{name:[a-zA-Z$_][a-zA-Z0-9$_]*}}"
-        self._paramNameAndOrderRegExPattern = "(\_\_[a-zA-Z]+\_\d\_\_)" ##matches __asdasd_2__ at the begining
-        self._paramTypeRegExPattern = "[a-zA-Z]+" 
+
         self.wordProcess = word
         self.Memory = memory
-        self._reEngine = re.compile(self._paramNameAndOrderRegExPattern)
+        #self._reEngine = re.compile(self._paramNameAndOrderRegExPattern)
         self._currentContexts = []
         self.AccuracyFactor = 1 #Default value for intent selection
-
+            
     def setMemory(self,memory):
         self.memory = memory
     
@@ -30,66 +30,21 @@ class Brain:
 
     def Learn(self):
         for intent in self.Memory.Intents:
+            intent.Corpus = []
             for phrase in intent.getTrainingPhrases():
-                if(not phrase.hasEntity()):
-                    self._learnNoEntity(intent,phrase)
-                else:
-                    self._learnWithEntity(intent,phrase)
-            
+                self._learn(intent,phrase)
             intent.calculatePoints()
      
-    def _isParam(self,term):
-        match = re.match(self._paramNameAndOrderRegExPattern,term)
-        if match:
-            return True
-        else:
-            return False
 
-    def _getTypeNameFromParam(self,term):
-        match = re.search(self._paramTypeRegExPattern,term)
-        if match:
-            return match.group(0)
-        else:
-            return None
-            
-    def _learnNoEntity(self, intent, phrase):
-        totalPhrasePoints = 0
-        sentence = phrase.getSentence()
-        sentence = self.wordProcess.Tokenize(sentence)
-        sentence = self.wordProcess.Stemming(sentence)
-        sentence = self.wordProcess.RemoveStopWords(sentence)
-        sentence = self.wordProcess.RemoveSpecialChars(sentence)
-        for word in sentence:
-            if self._isParam(word) == True:
-                type = self._getTypeNameFromParam(word)
-                corpus = intent.findCorpusByEntity(type)
-                ##TODO: Need Refactoring in this part, to avoid repeting both if corpus == None: block
-                if corpus == None:
-                    corpus = CorpusItem()
-                    corpus.type = "entity"
-                    corpus.value = type
-                    corpus.strength = 1
-                    intent.addCorpusItem(corpus)
-                else:
-                    corpus.strength +=1
-                totalPhrasePoints = totalPhrasePoints + corpus.strength
-            else:
-                corpus = intent.findCorpusByTerm(word)
-                if corpus == None:
-                    corpus = CorpusItem()
-                    corpus.type = "term"
-                    corpus.value = word
-                    corpus.strength = 1
-                    intent.addCorpusItem(corpus)
-                else:
-                    corpus.strength +=1 
-                totalPhrasePoints = totalPhrasePoints + corpus.strength
-        phrase.Points = totalPhrasePoints
+    def _learn(self, intent, phrase):
 
-    def _learnWithEntity(self, intent, phrase):
-        phrase.resolveEntities()
+        phrase.resolve(self.wordProcess)
         intent.mergeEntities(phrase)
-        self._learnNoEntity(intent,phrase)
+
+        for corpus in phrase.Corpus:
+            intent.addCorpusItem(corpus)
+
+     
 
     def _getIntentsByContext(self):
 
@@ -102,44 +57,62 @@ class Brain:
         high_score = 0
         factor = 0
         selectedIntent = None
-
+        selectedPhrase = None
         intentList = self._getIntentsByContext()
 
         for intent in intentList:
-            score = 0
-            score = self.CalculateIntentScore(sentence,intent)
-            if score > high_score:
-                high_score = score
+            result = self.getIntentScore(sentence,intent)
+            if result['score']>high_score:
+                high_score = result['score']
                 selectedIntent = intent
+                selectedPhrase = result
   
         if(selectedIntent!=None):
-            factor = (high_score / selectedIntent.getHigherPointPhrase())
-            if factor>=self.AccuracyFactor:
+            if high_score>=self.AccuracyFactor:
                 self.addCurrentContext(selectedIntent.OutputContexts)
             else:
                 high_score = 0
                 selectedIntent = None
 
-        return {'intent':selectedIntent,'score': high_score, 'factor':factor }
+        return {'intent':selectedIntent,'score': high_score, 'phrase': selectedPhrase}
 
-    def CalculateIntentScore(self,sentence,intent):
-        score = 0 
-        sentence = self.wordProcess.Tokenize(sentence)
-        sentence = self.wordProcess.Stemming(sentence)
-        sentence = self.wordProcess.RemoveStopWords(sentence)
-        sentence = self.wordProcess.RemoveSpecialChars(sentence)
-        for word in sentence:
-            entity =  self.Memory.FindEntity(word)
-            if entity != None:
-                    corpus = intent.findCorpusByEntity(entity.Name)
-                    if corpus != None:
-                        strength = corpus.strength
-                        score += strength
-            else:
-                corpus = intent.findCorpusByTerm(word)
-                if corpus != None:
-                    strength = corpus.strength
-                    score += strength
+    def getIntentScore(self,sentence,intent):
+        procSentence = Sentence(self,sentence)
+        return intent.getPhraseByCorpus(procSentence.Corpus)
+        
+    #def CalculateIntentScore(self,sentence,intent):
+    #    score = 0 
+    #    procSentence = Sentence(self,sentence)
 
-        return score
+    #    intent.getPhraseByCorpus(procSentence)
+    #    #TODO: Converter para procurar tudo na phrase e nao na intencao
+    #    for item in procSentence.corpus:
+    #        if item.type == "entity":
+    #            corpus = intent.findCorpusByEntity(item.value)
+    #            if corpus != None:
+    #                score += corpus.strength
+    #        else:
+    #            corpus = intent.findCorpusByTerm(item.value)
+    #            if corpus != None:
+    #                score += corpus.strength
+
+    #    return procSentence.points/score
+    #def CalculateIntentScore(self,sentence,intent):
+    #    score = 0 
+    #    procSentence = Sentence(self,sentence)
+    #    #TODO: Iterar no Corpus da Sentence e rever o bloco abaixo
+    #    for word in sentence:
+    #        entity =  self.Memory.FindEntity(word)
+    #        if entity != None:
+    #                corpus = intent.findCorpusByEntity(entity.Name)
+    #                if corpus != None:
+    #                    strength = corpus.strength
+    #                    score += strength
+    #        else:
+    #            corpus = intent.findCorpusByTerm(word)
+    #            if corpus != None:
+    #                strength = corpus.strength
+    #                score += strength
+
+    #    return score
 

@@ -12,6 +12,7 @@ from entities import Entity
 from intent import Intent
 from memory import Memory
 from phrase import Phrase
+from brain import Brain
 class TestPhrase(unittest.TestCase):
 
     def setUp(self):
@@ -19,6 +20,7 @@ class TestPhrase(unittest.TestCase):
         entity = Entity()
         entity.Name = "mineral"
         word = WordProcess()
+        self.brain = Brain(word,self.memoryComplex)
         sin = Synonym(word)
         sin.setPrincipal("pedra")
         sin.addOther("pedregulho")
@@ -69,7 +71,7 @@ class TestPhrase(unittest.TestCase):
         self.assertEqual(phrase.params["mineral_1"].type,"mineral","tipo nao bate")
     
     def testResolveEntities(self):
-        phrase = Phrase("qual a intenção de {entity:{name:mineral}}")
+        phrase = Phrase("qual a intenção de {entity:{name:mineral}}",None,self.brain)
         phrase.resolveEntities()
         self.assertEqual(phrase.getSentence(),"qual a intenção de __mineral_1__")
  
@@ -83,6 +85,19 @@ class TestPhrase(unittest.TestCase):
         phrase.resolveEntities()
         self.assertEqual(phrase.getSentence(),"qual a intenção de __mineral_1__ e __animal_1__")
 
+    #def testgetScoreByCorpus(self):
+        
+    #    memorySimple = Memory()
+    #    intent = Intent()
+    #    intent.Name ="medo"
+    #    intent.addTrainingPhrase("estou com medo")
+    #    intent.addTrainingPhrase("tenho medo de fantasma")
+    #    memorySimple.Intents.append(intent)
+
+        
+
+    #    #self.expectedCorpusMedo = {'est': 1, 'med': 2, 'tenh': 1, 'fantasm': 1}
+    #    self.expectedCorpusMedo = { 'med': 2, 'fantasm': 1}
 
 if __name__ == '__main__':
     unittest.main()

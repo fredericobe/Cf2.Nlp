@@ -65,6 +65,7 @@ class Test_brain_parameters_test(unittest.TestCase):
         
         result = self.brain.GetMostProbableIntent("seleção de ouro")
         intent = result["intent"]
+        self.assertIsNone(intent,"Intent nao encontrado")
         self.assertEqual(intent.Name,"pedras","Nome do Intent não bateu")
         self.assertEqual(intent.Parameters["__mineral_1__"].name,"__mineral_1__","nome do parametro nao bateu")
         self.assertEqual(intent.Parameters["__mineral_1__"].actualValue,"ouro","actualValue nao bateu")
@@ -88,6 +89,11 @@ class Test_brain_parameters_test(unittest.TestCase):
         self.assertEqual(intent.Parameters["__mineral_1__"].actualValue,"rocha","actualValue nao bateu")
         self.assertEqual(intent.Parameters["__mineral_1__"].resolvedValue,"pedra","resolvedValue nao bateu")
 
+    def testar_getTypeNameFromParam(self):
+        word = WordProcess()
+        b = Brain(word,self.memoryComplex)
+        ret = b._getTypeNameFromParam("__teste_1__")
+        self.assertEquals(ret,"teste")
 
 if __name__ == '__main__':
     unittest.main()

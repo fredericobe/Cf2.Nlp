@@ -12,7 +12,9 @@ from term import Term
 from entities import Entity
 from intent import Intent
 from memory import Memory
-class TestBrain(unittest.TestCase):
+from corpusHelper import CorpusHelper
+
+class Test_Learn_Brain(unittest.TestCase):
 
     def setUp(self):
         
@@ -82,51 +84,44 @@ class TestBrain(unittest.TestCase):
 
 
         self.memorySimple = Memory()
+
         intent = Intent()
         intent.Name ="amor"
         intent.addTrainingPhrase("Eu te amo")
         intent.addTrainingPhrase("Você é o amor da minha vida")
 
         self.memorySimple.Intents.append(intent)
-        self.expectedCorpusAmor = {'amo': 1, 'voc': 1, 'é': 1, 'am': 1, 'minh': 1, 'vid': 1}
+        self.expectedCorpusAmor = {'amo': 1, 'é': 1, 'am': 1, 'vid': 1}
 
-
+        self.memoryMedo = Memory()
         intent = Intent()
         intent.Name ="medo"
         intent.addTrainingPhrase("estou com medo")
         intent.addTrainingPhrase("tenho medo de fantasma")
-        self.memorySimple.Intents.append(intent)
+        self.memoryMedo.Intents.append(intent)
 
         
 
-        self.expectedCorpusMedo = {'est': 1, 'med': 2, 'tenh': 1, 'fantasm': 1}
-
+        #self.expectedCorpusMedo = {'est': 1, 'med': 2, 'tenh': 1, 'fantasm': 1}
+        self.expectedCorpusMedo = { 'med': 2, 'fantasm': 1}
 
     def testar_isParam(self):
-        word = WordProcess()
-        b = Brain(word,self.memoryComplex)
+        b = CorpusHelper()
         ret = b._isParam("__teste_1__")
         
         self.assertTrue(ret)
     
     def testar_isParamFalse(self):
-        word = WordProcess()
-        b = Brain(word,self.memoryComplex)
+        b = CorpusHelper()
         ret = b._isParam(" __teste_1__")
         self.assertFalse(ret)
 
     def testar_isParamFalse2(self):
-        word = WordProcess()
-        b = Brain(word,self.memoryComplex)
+        b = CorpusHelper()
         ret = b._isParam("asd__teste_1__")
         self.assertFalse(ret)
 
-    def testar_getTypeNameFromParam(self):
-        word = WordProcess()
-        b = Brain(word,self.memoryComplex)
-        ret = b._getTypeNameFromParam("__teste_1__")
-        self.assertEquals(ret,"teste")
-
+   
 
     def testar_learn_bicho_length(self):
         word = WordProcess()
@@ -142,10 +137,10 @@ class TestBrain(unittest.TestCase):
         b.Learn()
         i = b.Memory.GetIntent("bicho")
         self.assertEquals(len(i.Corpus),len(self.expectedCorpusBicho), "O Corpus nao bateu")
-        self.assertEquals(self.expectedCorpusBicho[i.Corpus[0].value],i.Corpus[0].strength, "O Corpus nao bateu")
+        self.assertEquals(self.expectedCorpusBicho[i.Corpus[0].value.stem],i.Corpus[0].strength, "O Corpus nao bateu")
         self.assertEquals(self.expectedCorpusBicho[i.Corpus[1].value],i.Corpus[1].strength, "O Corpus nao bateu")
-        self.assertEquals(self.expectedCorpusBicho[i.Corpus[2].value],i.Corpus[2].strength, "O Corpus nao bateu")
-        self.assertEquals(self.expectedCorpusBicho[i.Corpus[3].value],i.Corpus[3].strength, "O Corpus nao bateu")
+        self.assertEquals(self.expectedCorpusBicho[i.Corpus[2].value.stem],i.Corpus[2].strength, "O Corpus nao bateu")
+        self.assertEquals(self.expectedCorpusBicho[i.Corpus[3].value.stem],i.Corpus[3].strength, "O Corpus nao bateu")
         
         
     def testar_learn_bicho_length(self):
@@ -163,15 +158,15 @@ class TestBrain(unittest.TestCase):
         i = b.Memory.GetIntent("pedras")
         
         self.assertEquals(len(i.Corpus),len(self.expectedCorpusPedras), "O Corpus nao bateu")
-        self.assertEquals(self.expectedCorpusPedras[i.Corpus[0].value],i.Corpus[0].strength, "O Corpus nao bateu")
+        self.assertEquals(self.expectedCorpusPedras[i.Corpus[0].value.stem],i.Corpus[0].strength, "O Corpus nao bateu")
         self.assertEquals(self.expectedCorpusPedras[i.Corpus[1].value],i.Corpus[1].strength, "O Corpus nao bateu")
-        self.assertEquals(self.expectedCorpusPedras[i.Corpus[2].value],i.Corpus[2].strength, "O Corpus nao bateu")
-        self.assertEquals(self.expectedCorpusPedras[i.Corpus[3].value],i.Corpus[3].strength, "O Corpus nao bateu")
+        self.assertEquals(self.expectedCorpusPedras[i.Corpus[2].value.stem],i.Corpus[2].strength, "O Corpus nao bateu")
+        self.assertEquals(self.expectedCorpusPedras[i.Corpus[3].value.stem],i.Corpus[3].strength, "O Corpus nao bateu")
         
 
     def testar_learn_medo(self):
         word = WordProcess()
-        b = Brain(word,self.memorySimple)
+        b = Brain(word,self.memoryMedo)
         b.Learn()
         i = b.Memory.GetIntent("medo")
         self.assertEquals(len(i.Corpus),len(self.expectedCorpusMedo))
@@ -182,7 +177,7 @@ class TestBrain(unittest.TestCase):
         b.Learn()
         i = b.Memory.GetIntent("amor")
         
-        self.assertEquals(len(i.Corpus),6, "O Corpus nao bateu")
+        self.assertEquals(len(i.Corpus),4, "O Corpus nao bateu")
 
     def testar_learn_amor(self):
         word = WordProcess()
@@ -190,79 +185,16 @@ class TestBrain(unittest.TestCase):
         b.Learn()
         i = b.Memory.GetIntent("amor")
         #self.assertEquals(i.Corpus,self.expectedCorpusAmor, "O Corpus nao bateu")
-        self.assertEquals(self.expectedCorpusAmor[i.Corpus[0].value],i.Corpus[0].strength, "O Corpus nao bateu")
-        self.assertEquals(self.expectedCorpusAmor[i.Corpus[1].value],i.Corpus[1].strength, "O Corpus nao bateu")
-        self.assertEquals(self.expectedCorpusAmor[i.Corpus[2].value],i.Corpus[2].strength, "O Corpus nao bateu")
-        self.assertEquals(self.expectedCorpusAmor[i.Corpus[3].value],i.Corpus[3].strength, "O Corpus nao bateu")
-        self.assertEquals(self.expectedCorpusAmor[i.Corpus[4].value],i.Corpus[4].strength, "O Corpus nao bateu")
-        self.assertEquals(self.expectedCorpusAmor[i.Corpus[5].value],i.Corpus[5].strength, "O Corpus nao bateu")
+        self.assertEquals(self.expectedCorpusAmor[i.Corpus[0].value.stem],i.Corpus[0].strength, "O Corpus nao bateu")
+        self.assertEquals(self.expectedCorpusAmor[i.Corpus[1].value.stem],i.Corpus[1].strength, "O Corpus nao bateu")
+        self.assertEquals(self.expectedCorpusAmor[i.Corpus[2].value.stem],i.Corpus[2].strength, "O Corpus nao bateu")
+        self.assertEquals(self.expectedCorpusAmor[i.Corpus[3].value.stem],i.Corpus[3].strength, "O Corpus nao bateu")
+       # self.assertEquals(self.expectedCorpusAmor[i.Corpus[4].value],i.Corpus[4].strength, "O Corpus nao bateu")
+        #self.assertEquals(self.expectedCorpusAmor[i.Corpus[5].value],i.Corpus[5].strength, "O Corpus nao bateu")
         
 
-    def testar_score_de_intent_sucesso_medo(self):
-        word = WordProcess()
-        b = Brain(word,self.memorySimple)
-        b.Learn()
-        i = b.Memory.GetIntent("medo")
-        result = b.CalculateIntentScore("tenho medo de aranhas",i)
-        self.assertEquals(result['score'],3)
-
-    def testar_score_de_intent_sucesso_amor(self):
-        word = WordProcess()
-        b = Brain(word,self.memorySimple)
-        b.Learn()
-        i = b.Memory.GetIntent("amor")
-        result = b.CalculateIntentScore("eu amo aquela menina",i)
-        self.assertEquals(result['score'],1)
-
+ 
     
-    def testar_score_de_intent_falha(self):
-        word = WordProcess()
-        b = Brain(word,self.memorySimple)
-        b.Learn()
-        i = b.Memory.GetIntent("amor")
-        result = b.CalculateIntentScore("tenho medo de aranhas",i)
-        self.assertEquals(int(result['score']),0)
-
-    def testar_obterIntentMedo(self):
-        word = WordProcess()
-        b = Brain(word,self.memorySimple)
-        b.AccuracyFactor=0.5
-        b.Learn()
-        result = b.GetMostProbableIntent("tenho medo de aranhas")
-        self.assertEquals(result['intent'].Name,"medo")
-
-    def testar_obterIntentPedra_1(self):
-        word = WordProcess()
-        b = Brain(word,self.memoryComplex)
-        b.AccuracyFactor=0.5
-        b.Learn()
-        result = b.GetMostProbableIntent("qual a intenção de rocha")
-        self.assertEquals(result['intent'].Name,"pedras")
-
-    def testar_obterIntentPedra_2(self):
-        word = WordProcess()
-        b = Brain(word,self.memoryComplex)
-        b.AccuracyFactor=0.5
-        b.Learn()
-        result = b.GetMostProbableIntent("qual a intenção de pedregulho")
-        self.assertEquals(result['intent'].Name,"pedras")
-
-    def testar_obterclasseAmor(self):
-        word = WordProcess()
-        b = Brain(word,self.memorySimple)
-        b.Learn()
-        b.AccuracyFactor=0.2
-        result = b.GetMostProbableIntent("eu amo pipoca")
-        self.assertEquals(result['intent'].Name,"amor")
-
-
-    def testar_obterclasseAmor2(self):      
-        word = WordProcess()
-        b = Brain(word,self.memorySimple)
-        b.Learn()
-        b.AccuracyFactor=0.4
-        result = b.GetMostProbableIntent("tenho amor por você")
-        self.assertEquals(result['intent'].Name,"amor")
 
 if __name__ == '__main__':
     unittest.main()

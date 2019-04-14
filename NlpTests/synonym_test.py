@@ -38,13 +38,13 @@ class TestSynonym(unittest.TestCase):
 
     def testar_isSinonym_pedregulho(self):
         word = WordProcess()
-        synonym = Synonym(word)
+        synonym1 = Synonym(word)
         
         
-        synonym.setPrincipal("pedra")
-        synonym.addOther("rocha")
-        synonym.addOther("cascalho")
-        self.assertFalse(synonym.isSynonym("pedregulho"))       
+        synonym1.setPrincipal("pedra")
+        synonym1.addOther("rocha")
+        synonym1.addOther("cascalho")
+        self.assertFalse(synonym1.isSynonym("pedregulho"))       
 
 
 if __name__ == '__main__':

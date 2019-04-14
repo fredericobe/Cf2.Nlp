@@ -20,10 +20,10 @@ class Memory:
 
         return None
 
-    def FindEntity(self, term):
+    def FindEntity(self, word):
         ###Lookup the given term into the momory of entities
         for entity in self.Entities:
-            if entity.HasSynonym(term):
+            if entity.HasSynonym(word):
                 return entity
 
         return None

@@ -5,9 +5,9 @@ class Entity:
         self.Name = ""
         self.Synonymous = []
 
-    def HasSynonym(self,term):
+    def HasSynonym(self,word):
         for synonym in self.Synonymous:
-            if synonym.isSynonym(term):
+            if synonym.isSynonym(word):
                 return True
             else:
                 return False

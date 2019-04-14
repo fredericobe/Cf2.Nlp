@@ -12,10 +12,7 @@ class Synonym:
   
 
     def _getTerm(self,term):
-        t = Term()
-        t.value = term
-        t.stem = self.wordProcess.Stemming([term])
-        return t
+        return self.wordProcess.Stemming([term])[0]
 
     def setPrincipal(self,term):
         self._principal = self._getTerm(term)
@@ -31,8 +28,8 @@ class Synonym:
         return self._others
 
     
-    def isSynonym(self,term):
-        t = self._getTerm(term)
+    def isSynonym(self,word):
+        t = self._getTerm(word)
 
         if t.stem == self._principal.stem:
             return True

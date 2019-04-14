@@ -1,5 +1,9 @@
 from phrase import Phrase
+from corpusItem import CorpusItem
+from term import Term
+from corpusHelper import CorpusHelper
 
+import random
 class Intent:
     """An Intent has a collection of Training Phrase, and possible responses."""
     def __init__(self):
@@ -7,10 +11,11 @@ class Intent:
         self._trainingPhrases = []
         self.Parameters = {}
         self.Responses = []
-        self.Corpus= []
+        self.Corpus = []
         self.InputContexts = []
         self.OutputContexts = []
         self.TotalPoints = 0
+        self.helper = CorpusHelper()
 
     def addTrainingPhrase(self, sentence):
         """Get a simple sentece string and transform in the type Pharase, to add to the Phrase collection of the Intent"""
@@ -39,10 +44,11 @@ class Intent:
         return higherPoint
         
     def calculatePoints(self):
-        totalPoints = 0 #keeps the current total of points of this intent, for future accuracy factor
-        for x in self.Corpus:
-            totalPoints = totalPoints + x.strength
-        self.TotalPoints        = totalPoints
+        #totalPoints = 0 #keeps the current total of points of this intent, for future accuracy factor
+        #for x in self.Corpus:
+        #    totalPoints = totalPoints + x.strength
+        #self.TotalPoints        = totalPoints
+        pass
 
     def getTrainingPhrases(self):
         return self._trainingPhrases;
@@ -53,19 +59,28 @@ class Intent:
             if not param in self.Parameters:
                 self.Parameters[param] = phrase.params[param]
     
-    def addCorpusItem(self, corpus):
-        self.Corpus.append(corpus)
+    def addCorpusItem(self, corpusItem):
+        self.helper.addCorpusItem(self.Corpus,corpusItem)
 
     def findCorpusByTerm(self,term):
-        for item in self.Corpus:
-                if item.type == "term" and item.value==term:
-                    return item
-
-        return None
+        return self.helper.findCorpusByTerm(self.Corpus,term)
 
     def findCorpusByEntity(self,entityName):
-        for item in self.Corpus:
-                if item.type == "entity" and item.value==entityName:
-                    return item
+        return self.helper.findCorpusByEntity(self.Corpus,entityName)
+  
 
-        return None
+    def getPhraseByCorpus(self,corpus):
+
+        score = 0
+        selectedPhrase = None
+        for phrase in self.getTrainingPhrases():
+            scoreAtual = phrase.getScoreByCorpus(corpus)
+            if(scoreAtual > score):
+                score =scoreAtual
+                selectedPhrase = phrase
+        
+        return {'phrase':selectedPhrase,'score': score}
+    
+
+    def getRandomResponse(self):
+        return random.choice(self.Responses)        

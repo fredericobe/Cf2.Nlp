@@ -14,6 +14,7 @@ from entities import Entity
 from intent import Intent
 from memory import Memory
 from corpusItem import CorpusItem
+
 class TestIntent(unittest.TestCase):
 
     def setUp(self):
@@ -21,15 +22,37 @@ class TestIntent(unittest.TestCase):
 
 
     def testar_findCorpusByTerm(self):
+        wp = WordProcess()
         intent = Intent()
         intent.Name ="Falando de amor"
         corpus = CorpusItem()
         corpus.type = "term"
-        corpus.value = "teste"
+        corpus.value = wp.Stemming("teste")
         corpus.strength = 1
         intent.addCorpusItem(corpus)
-        corpusItem = intent.findCorpusByTerm("teste")
+        
+        term = wp.Stemming("teste")
+        corpusItem = intent.findCorpusByTerm(term)
         self.assertEquals(corpusItem.strength,1)
+   
+    def testar_findCorpusByTermStrength2(self):
+        wp = WordProcess()
+        intent = Intent()
+        intent.Name ="Falando de amor"
+        corpus = CorpusItem()
+        corpus.type = "term"
+        corpus.value = wp.Stemming("teste")
+        corpus.strength = 1
+        intent.addCorpusItem(corpus)
+        corpus = CorpusItem()
+        corpus.type = "term"
+        corpus.value = wp.Stemming("teste")
+        corpus.strength = 1
+        intent.addCorpusItem(corpus)
+        
+        terms = wp.Stemming("teste")
+        corpusItem = intent.findCorpusByTerm(terms)
+        self.assertEquals(corpusItem.strength,2)
 
     def testar_findCorpusByEntity(self):
         intent = Intent()
