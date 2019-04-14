@@ -52,10 +52,10 @@ class Test_intent_score(unittest.TestCase):
 
         self.brain = Brain(word,self.memory)
         self.brain.Learn()
-
-    
+  
         
-        
+        def test_validar_score_50(self):
+            pass
 
 if __name__ == '__main__':
     unittest.main()

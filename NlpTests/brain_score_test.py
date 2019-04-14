@@ -164,7 +164,7 @@ class Test_score_Brain(unittest.TestCase):
         word = WordProcess()
         b = Brain(word,self.memorySimple)
         b.Learn()
-        b.AccuracyFactor=0.4
+        b.AccuracyFactor=0.3
         result = b.GetMostProbableIntent("tenho amor por você")
         self.assertEquals(result['intent'].Name,"amor")
 

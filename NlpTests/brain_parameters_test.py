@@ -58,42 +58,42 @@ class Test_brain_parameters_test(unittest.TestCase):
         result = self.memory.GetIntent("pedras")
         
         self.assertEqual(len(result.Parameters),1,"total de parametros nao bateu")
-        self.assertIsNot(result.Parameters["__mineral_1__"],None,"nome não bateu")
+        self.assertIsNot(result.Parameters["mineral_1"],None,"nome não bateu")
         
 
     def test_escolher_um_parametro_ouro(self):
         
         result = self.brain.GetMostProbableIntent("seleção de ouro")
         intent = result["intent"]
-        self.assertIsNone(intent,"Intent nao encontrado")
+       
         self.assertEqual(intent.Name,"pedras","Nome do Intent não bateu")
-        self.assertEqual(intent.Parameters["__mineral_1__"].name,"__mineral_1__","nome do parametro nao bateu")
-        self.assertEqual(intent.Parameters["__mineral_1__"].actualValue,"ouro","actualValue nao bateu")
-        self.assertEqual(intent.Parameters["__mineral_1__"].resolvedValue,"metal","resolvedValue nao bateu")
+        self.assertEqual(intent.Parameters["mineral_1"].name,"mineral_1","nome do parametro nao bateu")
+        self.assertEqual(intent.Parameters["mineral_1"].actualValue,"ouro","actualValue nao bateu")
+        self.assertEqual(intent.Parameters["mineral_1"].resolvedValue,"metal","resolvedValue nao bateu")
 
     def test_escolher_um_parametro_pedra(self):
         
         result = self.brain.GetMostProbableIntent("seleção de pedra")
         intent = result["intent"]
-        self.assertEqual(intent.Name,"pedras","Nome do Intent não bateu")
-        self.assertEqual(intent.Parameters["__mineral_1__"].name,"__mineral_1__","nome do parametro nao bateu")
-        self.assertEqual(intent.Parameters["__mineral_1__"].actualValue,"pedra","actualValue nao bateu")
-        self.assertEqual(intent.Parameters["__mineral_1__"].resolvedValue,"pedra","resolvedValue nao bateu")
+        self.assertEqual(intent.Name,"pedras","Nome do Intent não bteu")
+        self.assertEqual(intent.Parameters["mineral_1"].name,"mineral_1","nome do parametro nao bateu")
+        self.assertEqual(intent.Parameters["mineral_1"].actualValue,"pedra","actualValue nao bateu")
+        self.assertEqual(intent.Parameters["mineral_1"].resolvedValue,"pedra","resolvedValue nao bateu")
 
     def test_escolher_um_parametro_rocha(self):
         
         result = self.brain.GetMostProbableIntent("seleção de rocha")
         intent = result["intent"]
         self.assertEqual(intent.Name,"pedras","Nome do Intent não bateu")
-        self.assertEqual(intent.Parameters["__mineral_1__"].name,"__mineral_1__","nome do parametro nao bateu")
-        self.assertEqual(intent.Parameters["__mineral_1__"].actualValue,"rocha","actualValue nao bateu")
-        self.assertEqual(intent.Parameters["__mineral_1__"].resolvedValue,"pedra","resolvedValue nao bateu")
+        self.assertEqual(intent.Parameters["mineral_1"].name,"mineral_1","nome do parametro nao bateu")
+        self.assertEqual(intent.Parameters["mineral_1"].actualValue,"rocha","actualValue nao bateu")
+        self.assertEqual(intent.Parameters["mineral_1"].resolvedValue,"pedra","resolvedValue nao bateu")
 
-    def testar_getTypeNameFromParam(self):
-        word = WordProcess()
-        b = Brain(word,self.memoryComplex)
-        ret = b._getTypeNameFromParam("__teste_1__")
-        self.assertEquals(ret,"teste")
+    #def testar_getTypeNameFromParam(self):
+    #    word = WordProcess()
+    #    b = Brain(word,self.memory)
+    #    ret = b._getTypeNameFromParam("teste_1")
+    #    self.assertEquals(ret,"teste")
 
 if __name__ == '__main__':
     unittest.main()

@@ -18,6 +18,7 @@ class CorpusHelper:
             corpusA.strength = corpusB.strength
             corpusA.type = corpusB.type
             corpusA.value = corpusB.value
+            corpusA.resolvedData = corpusB.resolvedData 
         else:
             corpusA.strength = corpusA.strength + corpusB.strength
 

@@ -79,6 +79,13 @@ class Intent:
                 score =scoreAtual
                 selectedPhrase = phrase
         
+        for paramName in self.Parameters:
+            param = self.Parameters[paramName]
+            item = self.helper.findCorpusByEntity(corpus,param.type)
+            if item!=None:
+                param.actualValue = item.resolvedData['actual']
+                param.resolvedValue = item.resolvedData['resolved']
+
         return {'phrase':selectedPhrase,'score': score}
     
 

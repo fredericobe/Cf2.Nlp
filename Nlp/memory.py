@@ -23,7 +23,8 @@ class Memory:
     def FindEntity(self, word):
         ###Lookup the given term into the momory of entities
         for entity in self.Entities:
-            if entity.HasSynonym(word):
-                return entity
+            result =  entity.GetSynonym(word)
+            if result != None:
+                return result
 
         return None

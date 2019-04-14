@@ -20,7 +20,8 @@ class Sentence:
             if entity != None:
                 corpus.type = "entity"
                 corpus.strength = 1  
-                corpus.value = entity.Name
+                corpus.value = entity['entity'].Name
+                corpus.resolvedData = {'resolved' : entity['resolved'], 'actual' : entity['actual']}
             else:
                 corpus.type = "term"
                 corpus.value = term

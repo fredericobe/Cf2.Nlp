@@ -3,12 +3,12 @@ from term import Term
 class Synonym:
     """A Synonym is a way to determine different word related to the same meaning in a given context or system wide"""
 
-    _principal = Term()
-    _others = []
+ 
 
     def __init__(self, word):
         self.wordProcess = word
-
+        self._principal = Term()
+        self._others = []
   
 
     def _getTerm(self,term):

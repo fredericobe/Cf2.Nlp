@@ -5,10 +5,11 @@ class Entity:
         self.Name = ""
         self.Synonymous = []
 
-    def HasSynonym(self,word):
+    def GetSynonym(self,word):
         for synonym in self.Synonymous:
             if synonym.isSynonym(word):
-                return True
-            else:
-                return False
+                return {'entity': self, 'resolved': synonym.getPrincipal().value, 'actual' : word}
+
+        
+        return None
             
