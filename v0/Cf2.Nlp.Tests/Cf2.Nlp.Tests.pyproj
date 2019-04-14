@@ -1,0 +1,56 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>300d1d09-93b0-4929-bc60-27cef4c06b38</ProjectGuid>
+    <ProjectHome>.</ProjectHome>
+    <StartupFile>Cf2.Nlp.Tests.py</StartupFile>
+    <SearchPath>
+    </SearchPath>
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <Name>Cf2.Nlp.Tests</Name>
+    <RootNamespace>Cf2.Nlp.Tests</RootNamespace>
+    <SonarQubeTestProject>True</SonarQubeTestProject>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="brain_context_test.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="brain_parameters_test.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="brain_test.py" />
+    <Compile Include="Cf2.Nlp.Tests.py" />
+    <Compile Include="intent_test.py" />
+    <Compile Include="phrase_test.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="synonym_test.py" />
+    <Compile Include="wordProcess_test.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Cf2.Nlp\Cf2.Nlp.pyproj">
+      <Name>Cf2.Nlp</Name>
+      <Project>{07ce13f2-2fb1-43b3-a277-dd8ca43af509}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
+  <!-- Uncomment the CoreCompile target to enable the Build command in
+       Visual Studio and specify your pre- and post-build commands in
+       the BeforeBuild and AfterBuild targets below. -->
+  <!--<Target Name="CoreCompile" />-->
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+</Project>
