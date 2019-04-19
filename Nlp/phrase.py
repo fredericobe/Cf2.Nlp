@@ -20,8 +20,8 @@ class Phrase:
         self.myBraing = brain
         self.params = dict() 
         self._hasEntity = None
-
-        self.Points = 0
+        self.helper = CorpusHelper()
+        self.TotalStrength  = 0
         self.Corpus= []
 
     def _getTypeNameFromParam(self,term):
@@ -50,15 +50,19 @@ class Phrase:
     
     def getScoreByCorpus(self, corpus):
         match= 0
+        found = None
+        newPhraseCorpus = self.Corpus.copy()
         for item in corpus:
             if item.type == "entity":
-                corpus = self.findCorpusByEntity(item.value)
+                found= self.helper.findCorpusByEntity(newPhraseCorpus,item.value)
             else:
-                corpus = self.findCorpusByTerm(item.value)
+                found = self.helper.findCorpusByTerm(newPhraseCorpus,item.value)
             
-            if corpus != None:
+            if found != None:
+                del newPhraseCorpus[newPhraseCorpus.index(found)]
                 match+= 1
-           
+            
+            
         if match==0:
             return 0
         else:
@@ -111,7 +115,7 @@ class Phrase:
         return match.group(0)
 
     def resolve(self, wordProcess):
-        totalPhrasePoints = 0
+        
 
         if(self.hasEntity()):
               self.resolveEntities()
@@ -126,27 +130,28 @@ class Phrase:
         for word in sentence:
             if helper._isParam(word) == True:
                 type = self._getTypeNameFromParam(word)
-                corpus = self.findCorpusByEntity(type)
-                if corpus == None:
-                    corpus = CorpusItem()
-                    corpus.type = "entity"
-                    corpus.value = type
-                    corpus.strength = 1
-                    self.addCorpusItem(corpus)
-                else:
-                    corpus.strength +=1
-                totalPhrasePoints = totalPhrasePoints + corpus.strength
+                #corpus = self.findCorpusByEntity(type)
+                #if corpus == None:
+                corpus = CorpusItem()
+                corpus.type = "entity"
+                corpus.value = type
+                corpus.strength = 1
+                self.addCorpusItem(corpus)
+                #else:
+                 #   corpus.strength +=1
             else:
-                corpus = self.findCorpusByTerm(word)
-                if corpus == None:
+                #corpus = self.findCorpusByTerm(word)
+                #if corpus == None:
                     corpus = CorpusItem()
                     corpus.type = "term"
                     corpus.value = word
                     corpus.strength = 1
                     self.addCorpusItem(corpus)
-                else:
-                    corpus.strength +=1 
-                totalPhrasePoints = totalPhrasePoints + corpus.strength
+               # else:
+                #    corpus.strength +=1 
                 
-        self.Points = totalPhrasePoints
+        self.TotalStrength = 0
+        for corpus in self.Corpus:
+            self.TotalStrength += corpus.strength
+         
             

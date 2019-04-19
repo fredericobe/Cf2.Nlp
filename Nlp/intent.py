@@ -2,6 +2,7 @@ from phrase import Phrase
 from corpusItem import CorpusItem
 from term import Term
 from corpusHelper import CorpusHelper
+from collections import deque
 
 import random
 class Intent:
@@ -59,8 +60,8 @@ class Intent:
             if not param in self.Parameters:
                 self.Parameters[param] = phrase.params[param]
     
-    def addCorpusItem(self, corpusItem):
-        self.helper.addCorpusItem(self.Corpus,corpusItem)
+    def addCorpusItem(self, corpusItem, merge = False):
+        self.helper.addCorpusItem(self.Corpus,corpusItem,merge )
 
     def findCorpusByTerm(self,term):
         return self.helper.findCorpusByTerm(self.Corpus,term)
@@ -70,23 +71,26 @@ class Intent:
   
 
     def getPhraseByCorpus(self,corpus):
-
+        ###Corpus is the corpus of the sentence that is being search
         score = 0
         selectedPhrase = None
+        totalStrength = 0 
         for phrase in self.getTrainingPhrases():
             scoreAtual = phrase.getScoreByCorpus(corpus)
             if(scoreAtual > score):
                 score =scoreAtual
                 selectedPhrase = phrase
-        
+                totalStrength = phrase.TotalStrength 
+
+        newCorpus = corpus.copy()
         for paramName in self.Parameters:
             param = self.Parameters[paramName]
-            item = self.helper.findCorpusByEntity(corpus,param.type)
+            item = self.helper.findCorpusByEntity(newCorpus ,param.type,True)
             if item!=None:
                 param.actualValue = item.resolvedData['actual']
                 param.resolvedValue = item.resolvedData['resolved']
 
-        return {'phrase':selectedPhrase,'score': score}
+        return {'phrase':selectedPhrase,'score': score, 'totalStrength' : totalStrength }
     
 
     def getRandomResponse(self):

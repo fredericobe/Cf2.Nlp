@@ -42,7 +42,7 @@ class Brain:
         intent.mergeEntities(phrase)
 
         for corpus in phrase.Corpus:
-            intent.addCorpusItem(corpus)
+            intent.addCorpusItem(corpus,True)
 
      
 
@@ -58,12 +58,15 @@ class Brain:
         factor = 0
         selectedIntent = None
         selectedPhrase = None
+        higherStrength = 0
+
         intentList = self._getIntentsByContext()
 
         for intent in intentList:
             result = self.getIntentScore(sentence,intent)
-            if result['score']>high_score:
+            if (result['score']>high_score) or (result['score']==high_score and result['totalStrength']>higherStrength):
                 high_score = result['score']
+                higherStrength = result['totalStrength']
                 selectedIntent = intent
                 selectedPhrase = result
   

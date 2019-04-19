@@ -48,7 +48,7 @@ class TestIntent(unittest.TestCase):
         corpus.type = "term"
         corpus.value = wp.Stemming("teste")
         corpus.strength = 1
-        intent.addCorpusItem(corpus)
+        intent.addCorpusItem(corpus,True)
         
         terms = wp.Stemming("teste")
         corpusItem = intent.findCorpusByTerm(terms)

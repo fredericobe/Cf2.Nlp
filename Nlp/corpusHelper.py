@@ -24,12 +24,13 @@ class CorpusHelper:
 
         return corpusA
     
-    def addCorpusItem(self, corpus, corpusItem):
+    def addCorpusItem(self, corpus, corpusItem, merge=False):
         c = None
-        if corpusItem.type == "term":
-            c = self.findCorpusByTerm(corpus,corpusItem.value)
-        else:
-            c = self.findCorpusByEntity(corpus,corpusItem.value)
+        if merge:
+            if corpusItem.type == "term":
+                c = self.findCorpusByTerm(corpus,corpusItem.value)
+            else:
+                c = self.findCorpusByEntity(corpus,corpusItem.value)
         
         found = c != None
         c = self._mergeCorpusItem(c,corpusItem)
@@ -41,16 +42,20 @@ class CorpusHelper:
         else:
             corpus.append(c)
 
-    def findCorpusByTerm(self,corpus,term):
+    def findCorpusByTerm(self,corpus,term, remove=False):
         for item in corpus:
                 if item.type == "term" and item.value.stem==term.stem:
+                    if remove:
+                        corpus.remove(item)
                     return item
 
         return None
 
-    def findCorpusByEntity(self,corpus,entityName):
+    def findCorpusByEntity(self,corpus,entityName, remove=False):
         for item in corpus:
                 if item.type == "entity" and item.value==entityName:
+                    if remove:
+                        corpus.remove(item)
                     return item
 
         return None
