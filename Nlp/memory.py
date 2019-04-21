@@ -1,3 +1,6 @@
+from entities import Entity
+from regExpEntity import RegExpEntity
+import re
 class Memory:
     """A Memory is the repository of the related Intents and Entities"""
 
@@ -23,8 +26,16 @@ class Memory:
     def FindEntity(self, word):
         ###Lookup the given term into the momory of entities
         for entity in self.Entities:
-            result =  entity.GetSynonym(word)
-            if result != None:
-                return result
+            if isinstance(entity,Entity):
+                result =  entity.GetSynonym(word)
+                if result != None:
+                    return result
+            else:
+               if isinstance(entity,RegExpEntity):
+                   r = re.compile(entity.RegExp)
+                   result = r.search(word)
+                   if result != None:
+                       return {'entity': entity, 'resolved': word, 'actual' : word}
+                       return 
 
         return None

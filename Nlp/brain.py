@@ -61,9 +61,9 @@ class Brain:
         higherStrength = 0
 
         intentList = self._getIntentsByContext()
-
+        procSentence = Sentence(self,sentence)
         for intent in intentList:
-            result = self.getIntentScore(sentence,intent)
+            result = self._getIntentScore(procSentence,intent)
             if (result['score']>high_score) or (result['score']==high_score and result['totalStrength']>higherStrength):
                 high_score = result['score']
                 higherStrength = result['totalStrength']
@@ -79,43 +79,8 @@ class Brain:
 
         return {'intent':selectedIntent,'score': high_score, 'phrase': selectedPhrase}
 
-    def getIntentScore(self,sentence,intent):
-        procSentence = Sentence(self,sentence)
-        return intent.getPhraseByCorpus(procSentence.Corpus)
+    def _getIntentScore(self,processedSentece,intent):
         
-    #def CalculateIntentScore(self,sentence,intent):
-    #    score = 0 
-    #    procSentence = Sentence(self,sentence)
-
-    #    intent.getPhraseByCorpus(procSentence)
-    #    #TODO: Converter para procurar tudo na phrase e nao na intencao
-    #    for item in procSentence.corpus:
-    #        if item.type == "entity":
-    #            corpus = intent.findCorpusByEntity(item.value)
-    #            if corpus != None:
-    #                score += corpus.strength
-    #        else:
-    #            corpus = intent.findCorpusByTerm(item.value)
-    #            if corpus != None:
-    #                score += corpus.strength
-
-    #    return procSentence.points/score
-    #def CalculateIntentScore(self,sentence,intent):
-    #    score = 0 
-    #    procSentence = Sentence(self,sentence)
-    #    #TODO: Iterar no Corpus da Sentence e rever o bloco abaixo
-    #    for word in sentence:
-    #        entity =  self.Memory.FindEntity(word)
-    #        if entity != None:
-    #                corpus = intent.findCorpusByEntity(entity.Name)
-    #                if corpus != None:
-    #                    strength = corpus.strength
-    #                    score += strength
-    #        else:
-    #            corpus = intent.findCorpusByTerm(word)
-    #            if corpus != None:
-    #                strength = corpus.strength
-    #                score += strength
-
-    #    return score
-
+        return intent.getPhraseByCorpus(processedSentece.Corpus)
+        
+   

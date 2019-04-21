@@ -29,6 +29,9 @@
     <Compile Include="memory.py" />
     <Compile Include="param.py" />
     <Compile Include="phrase.py" />
+    <Compile Include="regExpEntity.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="sentence.py" />
     <Compile Include="synonym.py" />
     <Compile Include="term.py" />

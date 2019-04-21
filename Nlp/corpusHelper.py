@@ -6,7 +6,7 @@ class CorpusHelper:
 
     
     def __init__(self):
-        self._entityRegExPatterns = "{entity:{name:[a-zA-Z$_][a-zA-Z0-9$_]*}}"
+       # self._entityRegExPatterns = "{entity:{name:[a-zA-Z$_][a-zA-Z0-9$_]*}}"
         self._paramNameAndOrderRegExPattern = "(\_\_[a-zA-Z]+\_\d\_\_)" ##matches __asdasd_2__ at the begining
         
 
