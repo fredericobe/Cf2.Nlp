@@ -16,6 +16,7 @@ class Intent:
         self.InputContexts = []
         self.OutputContexts = []
         self.TotalPoints = 0
+        self.Completed = None #Identify if a intention if fully satisfied
         self.helper = CorpusHelper()
 
     def addTrainingPhrase(self, sentence):
@@ -44,15 +45,20 @@ class Intent:
                 higherPoint = phrase.Points
         return higherPoint
         
-    def calculatePoints(self):
-        #totalPoints = 0 #keeps the current total of points of this intent, for future accuracy factor
-        #for x in self.Corpus:
-        #    totalPoints = totalPoints + x.strength
-        #self.TotalPoints        = totalPoints
-        pass
 
     def getTrainingPhrases(self):
         return self._trainingPhrases;
+
+    
+    def resolve(self, wordProcess):
+        self.Corpus = []
+        for phrase in self.getTrainingPhrases():
+            phrase.resolve(wordProcess)
+            self.mergeEntities(phrase)
+
+            for corpus in phrase.Corpus:
+                self.addCorpusItem(corpus,True)
+
 
     def mergeEntities(self,phrase):
         """merge the entities of some phease into the Parameters of the Intent"""
@@ -83,15 +89,29 @@ class Intent:
                 totalStrength = phrase.TotalStrength 
 
         newCorpus = corpus.copy()
+        self.Completed = True
         for paramName in self.Parameters:
             param = self.Parameters[paramName]
             item = self.helper.findCorpusByEntity(newCorpus ,param.type,True)
             if item!=None:
                 param.actualValue = item.resolvedData['actual']
                 param.resolvedValue = item.resolvedData['resolved']
-
+            else:
+                if param.mandatory:
+                    self.Completed= False
+        
         return {'phrase':selectedPhrase,'score': score, 'totalStrength' : totalStrength }
     
 
-    def getRandomResponse(self):
-        return random.choice(self.Responses)        
+    def getResponse(self):
+
+        if self.Completed:
+            return random.choice(self.Responses)        
+        else:
+            for name in self.Parameters:
+                param = self.Parameters[name]
+                if param.mandatory and param.resolvedValue == None:
+                    if len(param.fulfilmentPhrases) ==0:
+                        return "What is " + name
+                    else:
+                        return random.choice(param.fulfilmentPhrases).sentence

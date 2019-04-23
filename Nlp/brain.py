@@ -30,19 +30,9 @@ class Brain:
 
     def Learn(self):
         for intent in self.Memory.Intents:
-            intent.Corpus = []
-            for phrase in intent.getTrainingPhrases():
-                self._learn(intent,phrase)
-            intent.calculatePoints()
+            intent.resolve(self.wordProcess)
+            
      
-
-    def _learn(self, intent, phrase):
-
-        phrase.resolve(self.wordProcess)
-        intent.mergeEntities(phrase)
-
-        for corpus in phrase.Corpus:
-            intent.addCorpusItem(corpus,True)
 
      
 

@@ -10,3 +10,5 @@ class Parameter:
         self.type = None
         self.actualValue = None
         self.resolvedValue = None
+        self.mandatory = False
+        self.fulfilmentPhrases = []

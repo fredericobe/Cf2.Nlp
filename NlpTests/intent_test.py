@@ -71,9 +71,9 @@ class TestIntent(unittest.TestCase):
         intent.addResponse("Resposta 2")
         intent.addResponse("Resposta 3")
 
-        response1 = intent.getRandomResponse()
-        response2 = intent.getRandomResponse()
-        response3 = intent.getRandomResponse()
+        response1 = intent.getResponse()
+        response2 = intent.getResponse()
+        response3 = intent.getResponse()
 
         self.assertTrue(response1 != response2 or response3 != response2 or response1 != response3)
 

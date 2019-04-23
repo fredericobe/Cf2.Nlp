@@ -97,35 +97,8 @@ class Test_score_Brain(unittest.TestCase):
         intent.addTrainingPhrase("tenho medo de fantasma")
         self.memorySimple.Intents.append(intent)
 
-        
-
-        #self.expectedCorpusMedo = {'est': 1, 'med': 2, 'tenh': 1, 'fantasm': 1}
+         
         self.expectedCorpusMedo = { 'med': 2, 'fantasm': 1}
-
-    #def testar_score_de_intent_sucesso_medo(self):
-    #    word = WordProcess()
-    #    b = Brain(word,self.memorySimple)
-    #    b.Learn()
-    #    i = b.Memory.GetIntent("medo")
-    #    result = b.CalculateIntentScore("tenho medo de aranhas",i)
-    #    self.assertEquals(result['score'],3)
-
-    #def testar_score_de_intent_sucesso_amor(self):
-    #    word = WordProcess()
-    #    b = Brain(word,self.memorySimple)
-    #    b.Learn()
-    #    i = b.Memory.GetIntent("amor")
-    #    result = b.CalculateIntentScore("eu amo aquela menina",i)
-    #    self.assertEquals(result['score'],1)
-
-    
-    #def testar_score_de_intent_falha(self):
-    #    word = WordProcess()
-    #    b = Brain(word,self.memorySimple)
-    #    b.Learn()
-    #    i = b.Memory.GetIntent("amor")
-    #    result = b.CalculateIntentScore("tenho medo de aranhas",i)
-    #    self.assertEquals(int(result['score']),0)
 
     def testar_obterIntentMedo(self):
         word = WordProcess()
