@@ -1,3 +1,6 @@
+from jsonConvert import JsonConvert
+
+@JsonConvert.register
 class CorpusItem:
     """Corpus Item represent an Item in the corpus of words maintained within a Intent """
     

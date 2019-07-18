@@ -5,8 +5,12 @@ from corpusHelper import CorpusHelper
 from collections import deque
 
 import random
-class Intent:
+from jsonConvert import JsonConvert
+
+@JsonConvert.register
+class Intent():
     """An Intent has a collection of Training Phrase, and possible responses."""
+    helper = CorpusHelper()
     def __init__(self):
         self.Name = ""
         self._trainingPhrases = []
@@ -15,14 +19,12 @@ class Intent:
         self.Corpus = []
         self.InputContexts = []
         self.OutputContexts = []
-        self.TotalPoints = 0
         self.Completed = None #Identify if a intention if fully satisfied
-        self.helper = CorpusHelper()
+        
 
     def addTrainingPhrase(self, sentence):
         """Get a simple sentece string and transform in the type Pharase, to add to the Phrase collection of the Intent"""
         phrase = Phrase(sentence)
-        phrase.setIntent(self)
         self._trainingPhrases.append(phrase);
 
     def addResponse(self, sentence):
@@ -67,13 +69,13 @@ class Intent:
                 self.Parameters[param] = phrase.params[param]
     
     def addCorpusItem(self, corpusItem, merge = False):
-        self.helper.addCorpusItem(self.Corpus,corpusItem,merge )
+        Intent.helper.addCorpusItem(self.Corpus,corpusItem,merge )
 
     def findCorpusByTerm(self,term):
-        return self.helper.findCorpusByTerm(self.Corpus,term)
+        return Intent.helper.findCorpusByTerm(self.Corpus,term)
 
     def findCorpusByEntity(self,entityName):
-        return self.helper.findCorpusByEntity(self.Corpus,entityName)
+        return Intent.helper.findCorpusByEntity(self.Corpus,entityName)
   
 
     def getPhraseByCorpus(self,corpus):
@@ -92,7 +94,7 @@ class Intent:
         self.Completed = True
         for paramName in self.Parameters:
             param = self.Parameters[paramName]
-            item = self.helper.findCorpusByEntity(newCorpus ,param.type,True)
+            item = Intent.helper.findCorpusByEntity(newCorpus ,param.type,True)
             if item!=None:
                 param.actualValue = item.resolvedData['actual']
                 param.resolvedValue = item.resolvedData['resolved']
@@ -104,6 +106,7 @@ class Intent:
     
 
     def getResponse(self):
+
 
         if self.Completed:
             return random.choice(self.Responses)        

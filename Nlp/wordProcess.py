@@ -2,6 +2,9 @@ import nltk
 from nltk.stem import RSLPStemmer
 from term import Term
 import re
+from jsonConvert import JsonConvert
+
+
 class WordProcess:
     """WordProcess is low level class to pre process words, performing task as clearing stop words, stemming the words  and creating tokens from word"""
     def __init__(self):

@@ -26,9 +26,13 @@
     <Compile Include="corpusItem.py" />
     <Compile Include="entities.py" />
     <Compile Include="intent.py" />
+    <Compile Include="jsonConvert.py" />
     <Compile Include="memory.py" />
     <Compile Include="param.py" />
     <Compile Include="phrase.py" />
+    <Compile Include="phraseHelper.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="regExpEntity.py">
       <SubType>Code</SubType>
     </Compile>

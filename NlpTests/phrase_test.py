@@ -36,7 +36,7 @@ class TestPhrase(unittest.TestCase):
         sin.addOther("bronze")
 
         entity.Synonymous.append(sin)
-        self.memoryComplex.Entities.append(entity)
+        self.memoryComplex.AddEntity(entity)
 
 
     def testarHasEntities(self):
@@ -71,7 +71,7 @@ class TestPhrase(unittest.TestCase):
         self.assertEqual(phrase.params["mineral_1"].type,"mineral","tipo nao bate")
     
     def testResolveEntities(self):
-        phrase = Phrase("qual a intenção de {entity:{name:mineral}}",None,self.brain)
+        phrase = Phrase("qual a intenção de {entity:{name:mineral}}",None)
         phrase.resolveEntities()
         self.assertEqual(phrase.getSentence(),"qual a intenção de __mineral_1__")
  

@@ -35,7 +35,7 @@ class Test_score_Brain(unittest.TestCase):
         sin.addOther("bronze")
 
         entity.Synonymous.append(sin)
-        self.memoryComplex.Entities.append(entity)
+        self.memoryComplex.AddEntity(entity)
         
         intent = Intent()
         intent.Name ="pedras"
@@ -44,7 +44,7 @@ class Test_score_Brain(unittest.TestCase):
 
 
 
-        self.memoryComplex.Intents.append(intent)
+        self.memoryComplex.AddIntent(intent)
 
         self.expectedCorpusPedras = {'intenç': 1, 'mineral': 2, 'dig': 1, 'assunt': 1}
 
@@ -69,7 +69,7 @@ class Test_score_Brain(unittest.TestCase):
         sin.addOther("passaro")
 
         entity.Synonymous.append(sin)
-        self.memoryComplex.Entities.append(entity)
+        self.memoryComplex.AddEntity(entity)
         
         intent = Intent()
         intent.Name ="bicho"
@@ -78,7 +78,7 @@ class Test_score_Brain(unittest.TestCase):
 
         self.expectedCorpusBicho= {'intenç': 1, 'bicho': 2, 'dig': 1, 'assunt': 1} 
 
-        self.memoryComplex.Intents.append(intent)
+        self.memoryComplex.AddIntent(intent)
 
 
         self.memorySimple = Memory()
@@ -87,7 +87,7 @@ class Test_score_Brain(unittest.TestCase):
         intent.addTrainingPhrase("Eu te amo")
         intent.addTrainingPhrase("Você é o amor da minha vida")
 
-        self.memorySimple.Intents.append(intent)
+        self.memorySimple.AddIntent(intent)
         self.expectedCorpusAmor = {'amo': 1, 'é': 1, 'am': 1, 'vid': 1}
 
 
@@ -95,7 +95,7 @@ class Test_score_Brain(unittest.TestCase):
         intent.Name ="medo"
         intent.addTrainingPhrase("estou com medo")
         intent.addTrainingPhrase("tenho medo de fantasma")
-        self.memorySimple.Intents.append(intent)
+        self.memorySimple.AddIntent(intent)
 
          
         self.expectedCorpusMedo = { 'med': 2, 'fantasm': 1}

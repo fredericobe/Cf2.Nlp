@@ -27,6 +27,9 @@
     <Compile Include="brain_test.py" />
     <Compile Include="intent_score_test.py" />
     <Compile Include="intent_test.py" />
+    <Compile Include="jsonConverter_test.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="parameters_fulfilment_test.py">
       <SubType>Code</SubType>
     </Compile>

@@ -67,6 +67,7 @@ class TestIntent(unittest.TestCase):
 
     def testar_randonResponse(self):
         intent = Intent()
+        intent.Completed= True
         intent.addResponse("Resposta 1")
         intent.addResponse("Resposta 2")
         intent.addResponse("Resposta 3")

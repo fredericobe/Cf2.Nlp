@@ -18,8 +18,9 @@ class Test_brain_context_test(unittest.TestCase):
     def setUp(self):
         
         word = WordProcess()
+
         self.memory = Memory()
-        
+      
         
         intent = Intent()
         intent.Name ="Boas_Vindas"
@@ -29,7 +30,7 @@ class Test_brain_context_test(unittest.TestCase):
         intent.addResponse("Olá, vou bem e você?")
         intent.addResponse("Estou ótimo, obrigado por perguntar!")
 
-        self.memory.Intents.append(intent)
+        self.memory.AddIntent(intent)
 
         intent = Intent()
         intent.Name ="comprar"
@@ -39,7 +40,7 @@ class Test_brain_context_test(unittest.TestCase):
         intent.addOutputContext("compra")
         intent.addResponse("Certo, o que você gostaria de comprar?")
         
-        self.memory.Intents.append(intent)
+        self.memory.AddIntent(intent)
 
 
         intent = Intent()
@@ -50,7 +51,7 @@ class Test_brain_context_test(unittest.TestCase):
         intent.addOutputContext("fim_compra")
         intent.addResponse("Certo, entendi o que você quer comprar. Obrigado")
         
-        self.memory.Intents.append(intent)
+        self.memory.AddIntent(intent)
 
         word = WordProcess()
         self.brain = Brain(word,self.memory)

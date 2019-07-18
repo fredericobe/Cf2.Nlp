@@ -1,11 +1,14 @@
 from wordProcess import WordProcess
 from term import Term
-class Synonym:
+from jsonConvert import JsonConvert
+
+@JsonConvert.register
+class Synonym():
     """A Synonym is a way to determine different word related to the same meaning in a given context or system wide"""
 
  
 
-    def __init__(self, word):
+    def __init__(self, word=None):
         self.wordProcess = word
         self._principal = Term()
         self._others = []

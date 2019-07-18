@@ -7,6 +7,10 @@ Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "Nlp", "Nlp\Nlp.pyproj", "{3
 EndProject
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "NlpTests", "NlpTests\NlpTests.pyproj", "{265D6FDF-B212-4225-B351-2E443020AB61}"
 EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "NlpApi", "NlpApi\NlpApi.pyproj", "{B518DEFC-3FBC-4D07-B63C-0DFC36DA739A}"
+EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "NlpApiTests", "NlpApiTests\NlpApiTests.pyproj", "{A8741B21-9DD1-44FB-AA31-D52F369A6BA5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,6 +21,10 @@ Global
 		{3FA70E64-AF45-4EAE-B82A-319844AB5665}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{265D6FDF-B212-4225-B351-2E443020AB61}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{265D6FDF-B212-4225-B351-2E443020AB61}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B518DEFC-3FBC-4D07-B63C-0DFC36DA739A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B518DEFC-3FBC-4D07-B63C-0DFC36DA739A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8741B21-9DD1-44FB-AA31-D52F369A6BA5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8741B21-9DD1-44FB-AA31-D52F369A6BA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

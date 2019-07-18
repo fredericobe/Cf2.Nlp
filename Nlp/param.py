@@ -1,4 +1,7 @@
-class Parameter:
+from jsonConvert import JsonConvert
+
+@JsonConvert.register
+class Parameter():
     """A Parameter is the identifier of an Entity inside a Intent, usually, a parameter is linked to a Entity in a phrase of the intent"""
 
     def __init__(self):

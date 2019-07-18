@@ -31,7 +31,7 @@ class Test_parameters_fulfilment_test(unittest.TestCase):
        
         intent.addResponse("Sua pizza será entregue")
         
-        self.memory.Intents.append(intent)
+        self.memory.AddIntent(intent)
 
 
         entity = Entity()
@@ -45,7 +45,7 @@ class Test_parameters_fulfilment_test(unittest.TestCase):
         sin.setPrincipal("mussarela")
         
         entity.Synonymous.append(sin)
-        self.memory.Entities.append(entity)
+        self.memory.AddEntity(entity)
 
         param = Parameter()
         param.name = 'pizza_1'

@@ -1,5 +1,8 @@
 from synonym import Synonym
-class Entity:
+from jsonConvert import JsonConvert
+
+@JsonConvert.register
+class Entity():
     """An Entity is a component to combine multiple Synonym with a common objective"""
     def __init__(self):
         self.Name = ""

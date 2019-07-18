@@ -3,6 +3,9 @@ from corpusItem import CorpusItem
 from sentence import Sentence
 from corpusHelper import CorpusHelper
 import re
+from jsonConvert import JsonConvert
+
+
 class Brain:
 
 
@@ -29,9 +32,10 @@ class Brain:
         self._currentContexts = []
 
     def Learn(self):
-        for intent in self.Memory.Intents:
+        for intent in self.Memory.GetIntents():
             intent.resolve(self.wordProcess)
-            
+        
+        self.Memory.Save()
      
 
      
@@ -39,9 +43,9 @@ class Brain:
     def _getIntentsByContext(self):
 
         if len(self._currentContexts)==0:
-            return list(filter(lambda x: len(x.InputContexts)==0 ,self.Memory.Intents))              
+            return list(filter(lambda x: len(x.InputContexts)==0 ,self.Memory.GetIntents()))              
         else:
-            return list(filter(lambda x: len(x.InputContexts)>0 ,self.Memory.Intents)) 
+            return list(filter(lambda x: len(x.InputContexts)>0 ,self.Memory.GetIntents())) 
 
     def GetMostProbableIntent(self,sentence):
         high_score = 0

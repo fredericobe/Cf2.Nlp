@@ -3,33 +3,22 @@ import re
 from param import Parameter
 from corpusHelper import CorpusHelper
 from corpusItem import CorpusItem
-class Phrase:
+from phraseHelper import PhraseHelper
+from jsonConvert import JsonConvert
+
+@JsonConvert.register
+class Phrase():
     """A Phrase encapsulate a sentence string"""
 
-    def __init__(self, sentence = None, intent = None, brain = None):
-        self._entityToken = "__"
-        self._entityNumberToken = "_"
-        self._entityRegExPatterns = "{entity:{name:[a-zA-Z$_][a-zA-Z0-9$_]*}}"
-        self._paramTypeRegExPattern = "[a-zA-Z]+" 
-        self._entityNameRegExPatterns = "(?<=name:)[^}]*"
-        self._reEngineEnt = re.compile(self._entityRegExPatterns)
-        self._reEngineName = re.compile(self._entityNameRegExPatterns)
+    def __init__(self, sentence = None, intent = None ):
+    
         self._sentence= sentence
         self._originalSentence = sentence #imutable sentence given from the user
-        self.myIntent = intent
-        self.myBraing = brain
         self.params = dict() 
         self._hasEntity = None
-        self.helper = CorpusHelper()
         self.TotalStrength  = 0
         self.Corpus= []
 
-    def _getTypeNameFromParam(self,term):
-        match = re.search(self._paramTypeRegExPattern,term.stem)
-        if match:
-            return match.group(0)
-        else:
-            return None
             
     def addCorpusItem(self, corpus):
         self.Corpus.append(corpus)
@@ -49,14 +38,15 @@ class Phrase:
         return None
     
     def getScoreByCorpus(self, corpus):
+        helper = PhraseHelper()
         match= 0
         found = None
         newPhraseCorpus = self.Corpus.copy()
         for item in corpus:
             if item.type == "entity":
-                found= self.helper.findCorpusByEntity(newPhraseCorpus,item.value)
+                found= helper._corpus.findCorpusByEntity(newPhraseCorpus,item.value)
             else:
-                found = self.helper.findCorpusByTerm(newPhraseCorpus,item.value)
+                found = helper._corpus.findCorpusByTerm(newPhraseCorpus,item.value)
             
             if found != None:
                 del newPhraseCorpus[newPhraseCorpus.index(found)]
@@ -69,8 +59,7 @@ class Phrase:
             score = match/len(self.Corpus)
         return score
 
-    def setIntent(self,intent):
-        self.myIntent = intent
+
 
     def setSentence(self,sentence):
         self._sentence=sentence
@@ -82,37 +71,36 @@ class Phrase:
 
     def hasEntity(self):
         if(self._hasEntity==None):
-            self._hasEntity = len(self._reEngineEnt.findall(self._sentence))>0
+            helper = PhraseHelper()
+            self._hasEntity = len(helper._reEngineEnt.findall(self._sentence))>0
 
         return self._hasEntity
 
     def resolveEntities(self):
+        helper = PhraseHelper()
         totalLength = len(self._sentence)
-        match = self._reEngineEnt.search(self._sentence)
+        match = helper._reEngineEnt.search(self._sentence)
         i=1
         while(match!=None):
             end = match.end()
             start = match.start()
             value = match.group(0)
-            name = self.getName(value)
-            tempName = name + self._entityNumberToken + str(i)
+            name = helper.getName(value)
+            tempName = name + helper._entityNumberToken + str(i)
             while( tempName in self.params):
                 i = i +1
-                tempName = name + self._entityNumberToken + str(i)
+                tempName = name + helper._entityNumberToken + str(i)
 
             param = Parameter()
             param.name = tempName
             param.type = name
-            newSentence = self._sentence[0:start] + self._entityToken + tempName + self._entityToken + self._sentence[end:totalLength]
+            newSentence = self._sentence[0:start] + helper._entityToken + tempName + helper._entityToken + self._sentence[end:totalLength]
             self._sentence = newSentence
             self.params[tempName] = param
-            match = self._reEngineEnt.search(self._sentence,start)
+            match = helper._reEngineEnt.search(self._sentence,start)
 
               #  ent.replace
 
-    def getName(self, token):
-        match =  self._reEngineName.search(token)
-        return match.group(0)
 
     def resolve(self, wordProcess):
         
@@ -125,11 +113,11 @@ class Phrase:
         sentence = wordProcess.Stemming(sentence)
         sentence = wordProcess.RemoveStopWords(sentence)
         sentence = wordProcess.RemoveSpecialChars(sentence)
-        helper = CorpusHelper()
+        helper = PhraseHelper()
 
         for word in sentence:
-            if helper._isParam(word) == True:
-                type = self._getTypeNameFromParam(word)
+            if helper._corpus._isParam(word) == True:
+                type = helper._getTypeNameFromParam(word)
                 #corpus = self.findCorpusByEntity(type)
                 #if corpus == None:
                 corpus = CorpusItem()
