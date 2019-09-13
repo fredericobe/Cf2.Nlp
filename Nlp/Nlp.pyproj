@@ -20,6 +20,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="brain.py" />
+    <Compile Include="brainEntity.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="corpusHelper.py">
       <SubType>Code</SubType>
     </Compile>
@@ -34,6 +37,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="regExpEntity.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="response.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="sentence.py" />

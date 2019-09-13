@@ -17,6 +17,7 @@ class Test_brain_context_test(unittest.TestCase):
         pass
        
     def testar_importar_json(self):
+        #Memory Object
         x = '{\n'
         x = x +'    "Entities": [],\n'
         x = x +'    "Intents": [\n'

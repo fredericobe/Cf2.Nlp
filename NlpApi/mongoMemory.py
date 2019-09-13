@@ -20,7 +20,7 @@ class MongoMemory(Memory):
     def __init__(self, memoryId = None):
         self._id = memoryId
         self._cliente = MongoClient('localhost', 27017)
-        #connect('memories')
+      
         self._memories = self._cliente.memories
         if(self._id!=None):
             self._memory = self._memories.memory.find_one({"_id": self._id})
@@ -63,11 +63,7 @@ class MongoMemory(Memory):
     def __saveState(self):
         value = tempMemoryIn(self._intents,self._entities)
         if(self._id == None):
-            #doc = tempMemory()
-            #doc.intents = self._intents
-            #doc.entities =  self._entities
-            #doc.save()
-            
+      
             id = self._memories.memory.insert_one(json.loads(JsonConvert.ToJSON(value))).inserted_id
             self._id = id
         else:

@@ -4,16 +4,15 @@ from sentence import Sentence
 from corpusHelper import CorpusHelper
 import re
 from jsonConvert import JsonConvert
+from brainEntity import BrainEntity
 
-
-class Brain:
+class Brain(BrainEntity):
 
 
     def __init__(self, word, memory):
-
+        self.Name = ""
         self.wordProcess = word
         self.Memory = memory
-        #self._reEngine = re.compile(self._paramNameAndOrderRegExPattern)
         self._currentContexts = []
         self.AccuracyFactor = 1 #Default value for intent selection
             
