@@ -19,7 +19,7 @@ from brainRepository import BrainRepository
  
         
 
-api.add_resource(BrainApi, '/entity') # Route_1
+api.add_resource(EntityApi, '/entity') # Route_1
 #api.add_resource(IntentApi, '/intent') # Route_2
 
 if __name__ == '__main__':

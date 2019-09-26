@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>b518defc-3fbc-4d07-b63c-0dfc36da739a</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>NlpApi.py</StartupFile>
+    <StartupFile>brainApi.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -21,13 +21,16 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="match.py" />
+    <Compile Include="intentApi.py" />
+    <Compile Include="entityApi.py" />
     <Compile Include="brainRepository.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="mongoMemory.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="NlpApi.py" />
+    <Compile Include="brainApi.py" />
     <Compile Include="nlpservice.py" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
