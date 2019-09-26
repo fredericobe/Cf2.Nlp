@@ -14,7 +14,7 @@ from jsonConvert import JsonConvert
 from bson.objectid import ObjectId
 from bson import json_util
 
-class MongoRep(object):
+class BrainRepository(object):
     
     def __init__(self, memoryId = None):
         self._mongo = MongoClient('localhost', 27017) 

@@ -21,7 +21,7 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="mongoRep.py">
+    <Compile Include="brainRepository.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="mongoMemory.py">

@@ -21,6 +21,9 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="apiTest.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="MongoMemoryTest.py" />
     <Compile Include="mongo_brain_context_test.py">
       <SubType>Code</SubType>

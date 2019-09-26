@@ -17,11 +17,16 @@ from bson import json_util
 @JsonConvert.register
 class MongoMemory(Memory):
     
-    def __init__(self, memoryId = None):
+    def __init__(self, memoryId = None, mongoClient = None):
         self._id = memoryId
-        self._cliente = MongoClient('localhost', 27017)
-      
-        self._memories = self._cliente.memories
+        self._mongo = None
+
+        if(mongoClient == None):
+            self._mongo = MongoClient('localhost', 27017)
+        else:
+            self._mongo = mongoClient
+
+        self._memories = self._mongo.memories
         if(self._id!=None):
             self._memory = self._memories.memory.find_one({"_id": self._id})
             ##TODO: If has id but don t find any memory, should throw an exception 

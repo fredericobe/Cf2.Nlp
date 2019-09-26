@@ -13,7 +13,7 @@ sys.path.append('../')
 
 from mongoMemory import MongoMemory
 from brainEntity import BrainEntity
-from mongoRep import MongoRep
+from brainRepository import BrainRepository
 
 class Test_mongo_brain_crud_test(unittest.TestCase):
     
@@ -27,7 +27,7 @@ class Test_mongo_brain_crud_test(unittest.TestCase):
         brain.Language = "pt-BR"
         brain.AccuracyFactor = 1
 
-        rep = MongoRep()
+        rep = BrainRepository()
         id = rep.addBrain(brain)
 
         self.assertIsNotNone(id,"Id = "+id)
@@ -39,7 +39,7 @@ class Test_mongo_brain_crud_test(unittest.TestCase):
         brain.Language = "pt-BR"
         brain.AccuracyFactor = 1
 
-        rep = MongoRep()
+        rep = BrainRepository()
         id = rep.addBrain(brain)
 
         brain = rep.getBrain(id)
@@ -53,7 +53,7 @@ class Test_mongo_brain_crud_test(unittest.TestCase):
         brain.Language = "pt-BR"
         brain.AccuracyFactor = 1
 
-        rep = MongoRep()
+        rep = BrainRepository()
         id = rep.addBrain(brain)
 
         brain = BrainEntity()
@@ -72,7 +72,7 @@ class Test_mongo_brain_crud_test(unittest.TestCase):
         brain.Language = "pt-BR"
         brain.AccuracyFactor = 1
 
-        rep = MongoRep()
+        rep = BrainRepository()
         id = rep.addBrain(brain)
 
         brain1 = rep.getBrain(id)

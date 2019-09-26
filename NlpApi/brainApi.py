@@ -12,12 +12,19 @@ app = Flask("NlpApi")
 api = Api(app)
 
 from jsonConvert import JsonConvert
-from mongoRep import MongoRep
+from brainRepository import BrainRepository
 
 class BrainApi(Resource):
-     def get(self):
-        rep = MongoRep()
-        brains = rep.getBrains()
+
+    def __init__(self, brainRepository= None):
+
+        if(brainRepository == None):
+            self.brainRep = BrainRepository()
+        else:
+            self.brainRep = brainRepository
+
+    def get(self):
+        brains = self.brainRep.getBrains()
         return JsonConvert.ToJSON(brains)
         
 
