@@ -5,6 +5,8 @@ class JSONEncoder(json.JSONEncoder):
     def default(self, o):
         if isinstance(o, ObjectId):
             return str(o)
+        if o.isJsonRegiteredType:
+            return json.dumps(o.__dict__,sort_keys=True, indent=4)
         return json.JSONEncoder.default(self, o)
 
 
@@ -57,6 +59,7 @@ class JsonConvert(object):
     def register(clsself, cls):
         try:
             clsself.mappings[frozenset(tuple([attr for attr,val in cls().__dict__.items()]))] = cls
+            cls.isJsonRegiteredType = True
             return cls
         except Exception as e:
              raise TypeError('Object of type %s raised the following error while trying to register:  %s' % (cls, e))
