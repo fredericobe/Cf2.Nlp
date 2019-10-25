@@ -65,7 +65,30 @@ class Test_mongo_brain_crud_test(unittest.TestCase):
         list = rep.getBrains()
         self.assertGreater(len(list),1)
 
-    def testar_atualizar_cebebro(self):
+    def testar_atualizar_cerebro_sem_id_no_payload(self):
+        
+        brain = BrainEntity()
+        brain.Name = "My Brain"
+        brain.Language = "pt-BR"
+        brain.AccuracyFactor = 1
+
+        rep = BrainRepository()
+        id = rep.addBrain(brain)
+
+        brain1 = rep.getBrain(id)
+
+        del brain1._id
+
+        brain1.Name = "My Brain Update"
+
+        rep.updateBrain(id,brain1)
+
+        brain2 = rep.getBrain(id)
+
+        self.assertEqual(brain2._id,id)
+        self.assertEqual(brain2.Name,"My Brain Update")
+
+    def testar_atualizar_cerebro(self):
         
         brain = BrainEntity()
         brain.Name = "My Brain"

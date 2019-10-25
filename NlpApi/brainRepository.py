@@ -32,7 +32,9 @@ class BrainRepository(object):
         else:
             oId = id
         
-        del brain._id
+        if '_id' in brain.__dict__.keys():
+            del brain._id
+
         self._mongo.memories.brains.update_one({'_id': oId}, {'$set': json.loads(JsonConvert.ToJSON(brain))})
 
     def getBrain(self, id):

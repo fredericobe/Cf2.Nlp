@@ -20,7 +20,7 @@ class MongoMemory(Memory):
     def __init__(self, memoryId = None, mongoClient = None):
         self._id = memoryId
         self._mongo = None
-
+        ##TODO:Resolver isso
         if(mongoClient == None):
             self._mongo = MongoClient('localhost', 27017)
         else:
